@@ -8,17 +8,17 @@ const workTypes = [
 ];
 
 const firstSteps = [
-  { number: "Step 01", title: "Account", detail: "New Employee Information" },
-  { number: "Step 02", title: "Password", detail: "First Time Setup" },
-  { number: "Step 03", title: "Orders", detail: "Service Number + Password" },
-  { number: "Step 04", title: "Position", detail: "The Relevant Page" },
+  { number: "01", title: "Account", detail: "New Employee Information" },
+  { number: "02", title: "Password", detail: "First Time Setup" },
+  { number: "03", title: "Orders", detail: "Service Number + Password" },
+  { number: "04", title: "Position", detail: "The Relevant Page" },
 ];
 
 const nextSteps = [
-  { number: "Step 05", title: "Finger / Face ID", detail: "Finger-off Notes" },
-  { number: "Step 06", title: "Calculate The Time", detail: "Working Hours + OverTime" },
-  { number: "Step 07", title: "HR Check", detail: "Corrects Mistakes." },
-  { number: "Step 08", title: "Approval", detail: "Salary Slips Are Issued" },
+  { number: "05", title: "Finger / Face ID", detail: "Finger-off Notes" },
+  { number: "06", title: "Calculate The Time", detail: "Working Hours + OverTime" },
+  { number: "07", title: "HR Check", detail: "Corrects Mistakes." },
+  { number: "08", title: "Approval", detail: "Salary Slips Are Issued" },
 ];
 
 function StepRow({ steps }) {
@@ -43,10 +43,10 @@ function App() {
     <main className="page">
       <header className="topbar">
         <div>
-          <h1>Dinuka</h1>
+          <h1>Dinuka Nimesh</h1>
           <p>Garment Work and Attendance System</p>
         </div>
-        <strong>Positions and Steps - 8</strong>
+        <strong>Positions and Steps  ~ 08</strong>
       </header>
 
      
