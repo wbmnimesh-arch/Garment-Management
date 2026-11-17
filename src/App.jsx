@@ -2,9 +2,9 @@
 
 const workTypes = [
   { title: "The Owner", detail: "All Control and Salary Approval", color: "dark" },
-  { title: "The Manager", detail: "Team · Attendance · Leave", color: "green" },
-  { title: "Human Resources", detail: "Employee Data · Salary Preparation", color: "coral" },
-  { title: "The Employee", detail: "Own Attendance · Worksheet", color: "blue" },
+  { title: "The Manager", detail: "Team · Attendance · Leave", color: "blue" },
+  { title: "Human Resources", detail: "Employee Data · Salary Preparation", color: "lblue" },
+  { title: "The Employee", detail: "Own Attendance · Worksheet", color: "llblue" },
 ];
 
 const firstSteps = [

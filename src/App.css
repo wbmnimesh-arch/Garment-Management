@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
+
 :root {
-  font-family: "Inter", sans-serif;
-  color: #064f55;
-  background: #3721c3;
+  font-family: "Times New Roman", Times, serif;
+  color: #082b59;
+  background: #dbeafe;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -18,7 +19,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background: #eef8f7;
+  background: #eff6ff;
 }
 
 .page {
@@ -37,9 +38,9 @@ body {
   justify-content: space-between;
   gap: 24px;
   color: #fff;
-  background: linear-gradient(110deg, #00565b, #00866e);
-  border-radius: 30px;
-  box-shadow: 0 12px 28px rgb(0 78 75 / 12%);
+  background: linear-gradient(110deg, #082b59, #1d4ed8, #2563eb);
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgb(30 64 175 / 15%);
 }
 
 .topbar h1 {
@@ -52,7 +53,7 @@ body {
 
 .topbar p {
   margin: 0;
-  color: #9ce5d9;
+  color: #bfdbfe;
   font-size: 1rem;
 }
 
@@ -69,7 +70,7 @@ section {
 
 section h2 {
   margin: 0 0 26px;
-  color: #07545a;
+  color: #123b75;
   font-size: clamp(1.25rem, 2vw, 1.65rem);
   font-weight: 700;
 }
@@ -89,7 +90,7 @@ section h2 {
   justify-content: center;
   border-radius: 24px;
   color: #fff;
-  box-shadow: 0 10px 24px rgb(0 70 70 / 8%);
+  box-shadow: 0 10px 24px rgb(30 64 175 / 12%);
 }
 
 .work-card h3 {
@@ -101,25 +102,25 @@ section h2 {
 
 .work-card p {
   margin: 0;
-  color: rgb(255 255 255 / 76%);
+  color: rgb(255 255 255 / 85%);
   font-size: 0.98rem;
   line-height: 1.6;
 }
 
 .work-card.dark {
-  background: #00565b;
-}
-
-.work-card.green {
-  background: #009d82;
-}
-
-.work-card.coral {
-  background: #ff8067;
+  background: #082b59;
 }
 
 .work-card.blue {
-  background: #3183bd;
+  background: #1645a0;
+}
+
+.work-card.lblue {
+  background: #2563eb;
+}
+
+.work-card.llblue {
+  background: #60a5fa;
 }
 
 /* Steps */
@@ -138,9 +139,9 @@ section h2 {
   min-height: 188px;
   padding: 24px 28px;
   background: #fff;
-  border: 1px solid rgb(0 102 97 / 5%);
+  border: 1px solid #dbeafe;
   border-radius: 24px;
-  box-shadow: 0 12px 26px rgb(0 70 70 / 9%);
+  box-shadow: 0 12px 26px rgb(30 64 175 / 10%);
 }
 
 .step-number {
@@ -151,7 +152,7 @@ section h2 {
   align-items: center;
   justify-content: center;
   color: #fff;
-  background: #00b994;
+  background: #1e40af;
   border-radius: 50%;
   font-size: 1rem;
   font-weight: 700;
@@ -159,14 +160,14 @@ section h2 {
 
 .step-card h3 {
   margin: 0 0 14px;
-  color: #07545a;
+  color: #123b75;
   font-size: clamp(1rem, 1.4vw, 1.25rem);
   font-weight: 700;
 }
 
 .step-card p {
   margin: 0;
-  color: #a5bcbc;
+  color: #64748b;
   font-size: 0.95rem;
   line-height: 1.6;
 }
@@ -176,7 +177,7 @@ section h2 {
   top: 50%;
   right: -29px;
   z-index: 1;
-  color: #00b994;
+  color: #2563eb;
   font-size: 2rem;
   font-weight: 800;
   transform: translate(50%, -50%);
@@ -184,8 +185,8 @@ section h2 {
 
 /* Second row of steps */
 section:has(> h2 + .steps) .steps:last-child .step-number {
-  color: #009c82;
-  background: #d8f7ef;
+  color: #fff;
+  background: #60a5fa;
 }
 
 @media (max-width: 1050px) {
