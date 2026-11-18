@@ -1,251 +1,445 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
-
-:root {
-  font-family: "Times New Roman", Times, serif;
-  color: #082b59;
-  background: #dbeafe;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+/* GLOBAL */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  min-width: 320px;
+  font-family: "Times New Roman", serif;
+  background: #f1f6fc;
+  color: #183653;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* MAIN LAYOUT */
+.app-container {
+  display: flex;
   min-height: 100vh;
-  margin: 0;
-  background: #eff6ff;
 }
 
-.page {
-  width: 100%;
-  max-width: 1800px;
-  margin: 0 auto;
-  padding: 34px 44px 60px;
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #082b59, #1d4ed8);
+  color: white;
+  padding: 25px 18px;
+  z-index: 1001;
 }
 
-.topbar {
-  min-height: 136px;
-  margin-bottom: 66px;
-  padding: 28px 46px;
+.sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  color: #fff;
-  background: linear-gradient(110deg, #082b59, #1d4ed8, #2563eb);
-  border-radius: 20px;
-  box-shadow: 0 12px 28px rgb(30 64 175 / 15%);
+  padding: 5px 8px 35px;
 }
 
-.topbar h1 {
-  margin: 0 0 10px;
-  color: #fff;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.topbar p {
-  margin: 0;
-  color: #bfdbfe;
-  font-size: 1rem;
-}
-
-.topbar strong {
-  color: #fff;
-  font-size: clamp(1rem, 1.6vw, 1.4rem);
-  font-weight: 600;
-  text-align: right;
-}
-
-section {
-  margin-bottom: 58px;
-}
-
-section h2 {
-  margin: 0 0 26px;
-  color: #123b75;
-  font-size: clamp(1.25rem, 2vw, 1.65rem);
-  font-weight: 700;
-}
-
-/* Roles */
-.work-types {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 34px;
-}
-
-.work-card {
-  min-height: 144px;
-  padding: 28px 30px;
+.brand {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 23px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.brand-icon {
+  font-size: 27px;
+  color: #8fcaff;
+}
+
+.sidebar-menu {
+  flex: 1;
+}
+
+.menu-heading {
+  color: #91b5d9;
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin: 0 10px 18px;
+}
+
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 13px;
+  margin-bottom: 7px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #d4e5f7;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+}
+
+.menu-item.active {
+  background: #2878c7;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu-dot {
+  font-size: 9px;
+  color: #83c6ff;
+}
+
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 8px 5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  border-radius: 24px;
-  color: #fff;
-  box-shadow: 0 10px 24px rgb(30 64 175 / 12%);
+  background: #4d9ce5;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
 }
 
-.work-card h3 {
-  margin: 0 0 20px;
-  color: #fff;
-  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
-  font-weight: 700;
+.sidebar-profile h4 {
+  font-size: 15px;
 }
 
-.work-card p {
-  margin: 0;
-  color: rgb(255 255 255 / 85%);
-  font-size: 0.98rem;
-  line-height: 1.6;
+.sidebar-profile p {
+  color: #a8c9e8;
+  font-size: 13px;
+  margin-top: 4px;
 }
 
-.work-card.dark {
-  background: #082b59;
+/* MAIN CONTENT */
+.main-content {
+  width: calc(100% - 260px);
+  min-height: 100vh;
+  margin-left: 260px;
 }
 
-.work-card.blue {
-  background: #1645a0;
+.top-header {
+  min-height: 100px;
+  padding: 20px 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(110deg, #082b59, #1d4ed8, #2563eb);
+  border-bottom: 1px solid #dce8f4;
+  border-radius: 12px ;
+  margin: 10px 10px 0;
 }
 
-.work-card.lblue {
-  background: #2563eb;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.work-card.llblue {
-  background: #60a5fa;
+.top-header h1 {
+  font-size: 30px;
+  color: #f1f4f7;
 }
 
-/* Steps */
-.steps {
+.top-header p {
+  color: #bdc7d2;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #05fa94;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2ac47e;
+}
+
+/* PAGE CONTENT */
+.page-content {
+  padding: 35px;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 35px;
+}
+
+.small-title {
+  color: #4289c8;
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.page-title h2 {
+  font-size: 30px;
+  color: #123d70;
+}
+
+.step-count {
+  background: #dceeff;
+  color: #1766a8;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* SECTIONS */
+.content-section {
+  margin-bottom: 38px;
+}
+
+.section-heading {
+  font-size: 20px;
+  color: #194c7e;
+  margin-bottom: 20px;
+}
+
+/* ROLE CARDS */
+.roles-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 34px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 17px;
 }
 
-.step-wrap {
-  position: relative;
+.role-card {
+  padding: 24px 18px;
+  border-radius: 12px;
+  color: white;
+  min-height: 125px;
+  box-shadow: 0 5px 15px rgba(24, 65, 105, 0.08);
+}
+
+.role-card h3 {
+  font-size: 19px;
+  margin-bottom: 12px;
+}
+
+.role-card p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.role-card.dark {
+  background: linear-gradient(110deg, #082b59, #0d3b78, #346db7);
+}
+
+.role-card.blue {
+  background: linear-gradient(110deg,  #1c4bcd,#4173fd, #6b8ff2);
+}
+
+.role-card.lBlue {
+  background: linear-gradient(110deg, #215ad5, #6490f0, #7aa1f7);
+}
+
+.role-card.llBlue {
+  background: linear-gradient(110deg, #5199d1,#7dc1f4, #87c4f3);
+}
+
+/* STEPS */
+.steps-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.step-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   min-width: 0;
 }
 
 .step-card {
-  min-height: 188px;
-  padding: 24px 28px;
-  background: #fff;
-  border: 1px solid #dbeafe;
-  border-radius: 24px;
-  box-shadow: 0 12px 26px rgb(30 64 175 / 10%);
+  flex: 1;
+  min-height: 145px;
+  padding: 18px 14px;
+  background: white;
+  border: 1px solid #dce8f4;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(26, 69, 110, 0.05);
 }
 
 .step-number {
-  width: 56px;
-  height: 56px;
-  margin-bottom: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: #1e40af;
-  border-radius: 50%;
-  font-size: 1rem;
-  font-weight: 700;
+  display: inline-block;
+  color: #0640be;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 13px;
 }
 
 .step-card h3 {
-  margin: 0 0 14px;
-  color: #123b75;
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
-  font-weight: 700;
+  color: #174b7c;
+  font-size: 17px;
+  margin-bottom: 9px;
 }
 
 .step-card p {
-  margin: 0;
-  color: #64748b;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  color: #8295a8;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.arrow {
-  position: absolute;
-  top: 50%;
-  right: -29px;
-  z-index: 1;
-  color: #2563eb;
-  font-size: 2rem;
-  font-weight: 800;
-  transform: translate(50%, -50%);
+.step-arrow {
+  color: #1954ca;
+  font-size: 22px;
+  font-weight: bold;
 }
 
-/* Second row of steps */
-section:has(> h2 + .steps) .steps:last-child .step-number {
-  color: #fff;
-  background: #60a5fa;
+/* MOBILE BUTTONS */
+.mobile-menu-btn,
+.mobile-close-btn {
+  display: none;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  line-height: 1;
 }
 
-@media (max-width: 1050px) {
-  .page {
-    padding: 28px 30px 48px;
+/* OVERLAY */
+.sidebar-overlay {
+  display: none;
+}
+
+/* TABLET */
+@media (max-width: 1100px) {
+  .roles-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .work-types,
-  .steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
+  .steps-row {
+    flex-wrap: wrap;
   }
 
-  .arrow {
+  .step-wrapper {
+    flex: 1 1 45%;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 270px;
+    min-width: 270px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-btn {
+    display: block;
+    color: #297cca;
+    flex-shrink: 0;
+  }
+
+  .mobile-close-btn {
+    display: block;
+    font-size: 34px;
+    color: white;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .top-header {
+    min-height: 100px;
+    padding: 15px;
+  }
+
+  .top-header h1 {
+    font-size: 25px;
+  }
+
+  .top-header p {
+    font-size: 15px;
+  }
+
+  .header-right {
     display: none;
   }
 
-  .topbar {
-    margin-bottom: 48px;
-  }
-}
-
-@media (max-width: 600px) {
-  .page {
-    padding: 18px 16px 36px;
+  .page-content {
+    padding: 22px 16px;
   }
 
-  .topbar {
-    min-height: auto;
-    margin-bottom: 38px;
-    padding: 24px;
-    align-items: flex-start;
-    flex-direction: column;
-    border-radius: 22px;
+  .page-title h2 {
+    font-size: 23px;
   }
 
-  .topbar strong {
-    text-align: left;
-  }
-
-  section {
-    margin-bottom: 40px;
-  }
-
-  .work-types,
-  .steps {
+  .roles-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
   }
 
-  .work-card {
-    min-height: 126px;
-    padding: 24px;
-    border-radius: 20px;
+  .steps-row {
+    flex-direction: column;
+  }
+
+  .step-wrapper {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .step-arrow {
+    display: none;
   }
 
   .step-card {
-    min-height: 160px;
-    padding: 22px;
-    border-radius: 20px;
+    width: 100%;
+    min-height: 120px;
+  }
+
+  .step-count {
+    font-size: 11px;
+    padding: 8px 12px;
   }
 }
