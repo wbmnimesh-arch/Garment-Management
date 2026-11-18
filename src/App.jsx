@@ -74,9 +74,45 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Dashboard");
 
+  // Login states
+  const [selectedRole, setSelectedRole] = useState("");
+  const [showLogin, setShowLogin] = useState(false);
+  const [employeeId, setEmployeeId] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
   function handleMenuClick(item) {
     setActiveMenu(item);
     setIsMenuOpen(false);
+  }
+
+  // Select a role and open login page
+  function handleRoleClick(role) {
+    setSelectedRole(role);
+
+    window.setTimeout(() => {
+      setShowLogin(true);
+    }, 300);
+  }
+
+  // Return to role selection
+  function handleBack() {
+    setShowLogin(false);
+    setEmployeeId("");
+    setPassword("");
+    setMessage("");
+  }
+
+  // Sign in form
+  function handleSignIn(event) {
+    event.preventDefault();
+
+    if (!employeeId.trim() || !password.trim()) {
+      setMessage("Please enter your Employee ID and Password.");
+      return;
+    }
+
+    setMessage("Login details submitted successfully. Authentication is not connected yet.");
   }
 
   return (
@@ -159,38 +195,127 @@ export default function App() {
 
         <section className="page-content">
 
-          <div className="page-title">
-            <div>
-              <p className="small-title">WORKFLOW OVERVIEW</p>
-              <h2>Positions and Steps</h2>
-            </div>
-            <span className="step-count">08 STEPS</span>
-          </div>
+          {!showLogin ? (
 
-          <section className="content-section">
-            <h4 className="section-heading">System Positions</h4>
-
-            <div className="roles-grid">
-              {workTypes.map((role) => (
-                <div className={`role-card ${role.color}`} key={role.title}>
-                  <h3>{role.title}</h3>
-                  <p>{role.description}</p>
+            <>
+              <div className="page-title">
+                <div>
+                  <p className="small-title">WORKFLOW OVERVIEW</p>
+                  <h2>Positions and Steps</h2>
                 </div>
-              ))}
+                <span className="step-count">08 STEPS</span>
+              </div>
+
+              <section className="content-section">
+                <h4 className="section-heading">System Positions</h4>
+
+                <div className="roles-grid">
+                  {workTypes.map((role) => (
+                    <button
+                      type="button"
+                      className={`role-card ${role.color} ${
+                        selectedRole === role.title ? "selected" : ""
+                      }`}
+                      key={role.title}
+                      onClick={() => handleRoleClick(role.title)}
+                    >
+                      <h3>{role.title}</h3>
+                      <p>{role.description}</p>
+                      <span className="role-select-text">
+                        Click to Sign In →
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <section className="content-section">
+                <h4 className="section-heading">01 - 04 | Initial Process</h4>
+                <StepRow steps={firstSteps} />
+              </section>
+
+              <section className="content-section">
+                <h4 className="section-heading">
+                  05 - 08 | Attendance & Salary Process
+                </h4>
+                <StepRow steps={nextSteps} />
+              </section>
+            </>
+
+          ) : (
+
+            <div className="login-page">
+
+              <div className="login-card">
+
+                <div className="login-brand">
+                  <span className="login-logo">✂</span>
+                  <h2>CUT FREE</h2>
+                  <p>Garment Management System</p>
+                </div>
+
+                <div className="login-form-section">
+
+                  <p className="small-title">WELCOME BACK</p>
+                  <h2>Sign In</h2>
+                  <p className="login-subtitle">
+                    Please enter your details to access your account.
+                  </p>
+
+                  <div className="selected-role">
+                    <span>YOUR ROLE</span>
+                    <strong>{selectedRole}</strong>
+                  </div>
+
+                  <form onSubmit={handleSignIn}>
+
+                    <label htmlFor="employeeId">Employee ID / Username</label>
+                    <input
+                      id="employeeId"
+                      type="text"
+                      placeholder="Enter your Employee ID"
+                      value={employeeId}
+                      onChange={(e) => setEmployeeId(e.target.value)}
+                    />
+
+                    <label htmlFor="password">Password</label>
+                    <input
+                      id="password"
+                      type="password"
+                      placeholder="Enter your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <div className="forgot-password">
+                      Forgot Password? Contact HR Department.
+                    </div>
+
+                    {message && (
+                      <p className="login-message">{message}</p>
+                    )}
+
+                    <button type="submit" className="sign-in-btn">
+                      SIGN IN →
+                    </button>
+
+                  </form>
+
+                  <button
+                    type="button"
+                    className="back-btn"
+                    onClick={handleBack}
+                  >
+                    ← Back to Role Selection
+                  </button>
+
+                </div>
+
+              </div>
+
             </div>
-          </section>
 
-          <section className="content-section">
-            <h4 className="section-heading">01 - 04 | Initial Process</h4>
-            <StepRow steps={firstSteps} />
-          </section>
-
-          <section className="content-section">
-            <h4 className="section-heading">
-              05 - 08 | Attendance & Salary Process
-            </h4>
-            <StepRow steps={nextSteps} />
-          </section>
+          )}
 
         </section>
       </main>

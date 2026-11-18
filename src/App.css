@@ -443,3 +443,253 @@ button {
     padding: 8px 12px;
   }
 }
+
+/* CLICKABLE ROLE CARDS */
+
+.role-card {
+  width: 100%;
+  border: 3px solid transparent;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 30, 80, 0.2);
+}
+
+.role-card.selected {
+  background: linear-gradient(110deg, #06152d, #102b50, #183b66);
+  border-color: #8fcaff;
+  transform: scale(0.97);
+  box-shadow: 0 0 0 4px rgba(40, 120, 199, 0.2);
+}
+
+.role-select-text {
+  display: block;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #d8ecff;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.role-card:hover .role-select-text {
+  opacity: 1;
+}
+
+/* LOGIN PAGE */
+
+.login-page {
+  min-height: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 15px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 850px;
+  min-height: 520px;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(12, 48, 90, 0.15);
+}
+
+/* LOGIN LEFT SIDE */
+
+.login-brand {
+  background: linear-gradient(150deg, #062b50, #075b80, #087b87);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 35px 20px;
+}
+
+.login-logo {
+  font-size: 65px;
+  color: #9de8ff;
+}
+
+.login-brand h2 {
+  font-size: 30px;
+  letter-spacing: 3px;
+  margin-top: 15px;
+}
+
+.login-brand p {
+  color: #c9e7f4;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* LOGIN RIGHT SIDE */
+
+.login-form-section {
+  padding: 45px 40px;
+}
+
+.login-form-section h2 {
+  color: #103b69;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.login-subtitle {
+  color: #8193a7;
+  font-size: 14px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.selected-role {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 13px 15px;
+  margin-bottom: 22px;
+  border-left: 4px solid #1769c2;
+  background: #eaf3ff;
+  border-radius: 6px;
+}
+
+.selected-role span {
+  font-size: 11px;
+  color: #6685a5;
+  letter-spacing: 1px;
+}
+
+.selected-role strong {
+  color: #123d70;
+  font-size: 16px;
+}
+
+.login-form-section label {
+  display: block;
+  color: #244b70;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 16px 0 8px;
+}
+
+.login-form-section input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #d2deeb;
+  border-radius: 7px;
+  outline: none;
+  font-family: inherit;
+  font-size: 15px;
+  color: #183653;
+  transition: 0.2s;
+}
+
+.login-form-section input:focus {
+  border-color: #2676ca;
+  box-shadow: 0 0 0 3px rgba(38, 118, 202, 0.12);
+}
+
+.forgot-password {
+  text-align: right;
+  color: #63809c;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.sign-in-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 22px;
+  border: none;
+  border-radius: 7px;
+  background: linear-gradient(110deg, #082b59, #1d4ed8);
+  color: white;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sign-in-btn:hover {
+  background: linear-gradient(110deg, #041a38, #123a9e);
+  transform: translateY(-2px);
+}
+
+.back-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: #2465a5;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  color: #082b59;
+  text-decoration: underline;
+}
+
+.login-message {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #edf5ff;
+  color: #174b7c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* LOGIN MOBILE RESPONSIVE */
+
+@media (max-width: 768px) {
+  .login-page {
+    padding: 15px 0;
+    min-height: auto;
+  }
+
+  .login-card {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+  }
+
+  .login-brand {
+    padding: 25px 15px;
+  }
+
+  .login-logo {
+    font-size: 45px;
+  }
+
+  .login-brand h2 {
+    font-size: 24px;
+  }
+
+  .login-form-section {
+    padding: 30px 22px;
+  }
+
+  .login-form-section h2 {
+    font-size: 27px;
+  }
+
+  .role-select-text {
+    opacity: 1;
+  }
+}
