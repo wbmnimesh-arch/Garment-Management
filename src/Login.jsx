@@ -8,15 +8,26 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
-
     if (!employeeId.trim() || !password.trim()) {
       setMessage("කරුණාකර සියලු තොරතුරු ඇතුළත් කරන්න.");
       return;
     }
-
-    setMessage("Login details submitted successfully.");
+    setMessage("පිවිසෙමින්...");
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ employeeId, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "පිවිසීමට නොහැකි විය.");
+      setMessage(`${data.user.fullName}, ඔබ සාර්ථකව පිවිසුණා.`);
+    } catch (error) {
+      setMessage(error.message || "සේවාදායකයට සම්බන්ධ විය නොහැක.");
+    }
   }
 
   return (

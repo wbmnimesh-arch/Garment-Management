@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const menuItems = [
@@ -88,6 +88,11 @@ function App() {
 
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    localStorage.removeItem("cutfree_token");
+    localStorage.removeItem("cutfree_user");
+  }, []);
+
   function handleRoleSelect(role) {
     setSelectedRole(role);
     setShowLogin(true);
@@ -109,20 +114,29 @@ function App() {
     setMessage("");
   }
 
-  function handleSignIn(event) {
+  async function handleSignIn(event) {
     event.preventDefault();
-
     if (!employeeId.trim() || !password.trim()) {
       setMessage("Please enter your Employee ID and Password.");
       return;
     }
-
-    setMessage(
-      "Login form submitted. Connect the backend to verify your account."
-    );
+    setMessage("Signing in...");
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ employeeId, password, role: selectedRole }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Sign in failed.");
+      setMessage(`Welcome, ${data.user.fullName}.`);
+    } catch (error) {
+      setMessage(error.message || "Could not connect to the server.");
+    }
   }
 
-  function handleSignUp(event) {
+  async function handleSignUp(event) {
     event.preventDefault();
 
     if (
@@ -136,8 +150,8 @@ function App() {
       return;
     }
 
-    if (signupPassword.length < 6) {
-      setMessage("Password must contain at least 6 characters.");
+    if (signupPassword.length < 12) {
+      setMessage("Use a password with at least 12 characters.");
       return;
     }
 
@@ -146,9 +160,26 @@ function App() {
       return;
     }
 
-    setMessage(
-      "Registration details submitted. Please contact HR to activate your account."
-    );
+    setMessage("Submitting registration...");
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, employeeId: signupId, email, password: signupPassword }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Registration failed.");
+      setSelectedRole("The Employee");
+      setMessage(data.message);
+      setFullName("");
+      setSignupId("");
+      setEmail("");
+      setSignupPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      setMessage(error.message || "Could not connect to the server.");
+    }
   }
 
   return (
@@ -367,7 +398,7 @@ function App() {
                   <>
                     <h2>Create Account</h2>
                     <p className="login-subtitle">
-                      Register as a new employee
+                      New accounts start as Employees and need HR approval.
                     </p>
 
                     <form onSubmit={handleSignUp}>
@@ -398,7 +429,9 @@ function App() {
                       <label>Password</label>
                       <input
                         type="password"
-                        placeholder="Create a password"
+                        minLength={12}
+                        maxLength={128}
+                        placeholder="Create a password (12+ characters)"
                         value={signupPassword}
                         onChange={(e) => setSignupPassword(e.target.value)}
                       />
@@ -406,6 +439,8 @@ function App() {
                       <label>Confirm Password</label>
                       <input
                         type="password"
+                        minLength={12}
+                        maxLength={128}
                         placeholder="Confirm your password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
