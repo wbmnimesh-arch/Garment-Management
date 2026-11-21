@@ -1,24 +1,38 @@
 # CUT FREE backend
 
-## Setup
+මෙය Express සහ MongoDB (Mongoose) භාවිතා කරන API එකයි. Frontend එකේ `/api/auth/login` සහ `/api/auth/register` ඉල්ලීම් සමඟ ගැළපෙනවා.
 
-1. From `my-website/backend`, run `npm install`.
-2. Copy `.env.example` to `.env`. Set `MONGO_URI`, a random `JWT_SECRET` of at least 32 characters, and `CLIENT_ORIGIN` to the exact website origin. Keep `.env` private.
-3. Allow only the server's outbound IP in MongoDB Atlas Network Access. Never use `0.0.0.0/0` in production.
-4. Start MongoDB if using a local database.
-5. Run `npm run dev` here, then run `npm run dev` from `my-website` in a second terminal.
+## MongoDB Atlas அமைப்பு
 
-Vite forwards `/api` to `http://localhost:5000`. The backend starts only after MongoDB connects. In production, serve the app over HTTPS. If deployed behind a reverse proxy, set `TRUST_PROXY_HOPS` to the exact number of trusted proxy hops so client IP rate limits work correctly. Do not set this unless the app is behind a trusted proxy.
+1. Atlas-ல் cluster එකක් තනා, **Database Access** යටතේ database user කෙනෙක් සාදන්න. Username/password එක Website login account එකේ විස්තර නොවිය යුතුයි.
+2. **Network Access** යටතේ backend ධාවනය වන පරිගණකයට හෝ server එකට අවසර දෙන්න. හැකි නම් නිශ්චිත IP එකක් භාවිතා කරන්න.
+3. `.env.example` ගොනුව copy කර `backend/.env` නමින් සුරකින්න.
+4. `MONGO_URI` අගයට Atlas connection string එක දාන්න. `<database-user>`, `<url-encoded-password>`, සහ `<cluster-name>` වෙනුවට ඔබේ අගයන් දාන්න. Password එකේ `@`, `/`, `:` වැනි සලකුණු තිබේ නම් ඒවා URL-encode කරන්න.
+5. `JWT_SECRET` සඳහා අවම වශයෙන් අකුරු 32ක අහඹු රහසක් යොදන්න. `.env` කිසිවිටෙක source control හෝ chat එකට දාන්න එපා.
 
-## Authentication and access control
+## ආරම්භ කිරීම
 
-- `POST /api/auth/register` creates a pending Employee account. Public registration cannot assign elevated roles. Passwords need at least 12 characters (up to 72 UTF-8 bytes) and are hashed with bcrypt.
-- `POST /api/auth/login` checks credentials and account status, then sets an eight-hour `HttpOnly`, `SameSite=Strict` cookie. It does not return the JWT to browser JavaScript.
-- `POST /api/auth/logout` clears the session cookie; `GET /api/auth/me` returns the signed-in user.
-- `GET /api/admin/pending-users` lists pending users for Owner/HR.
-- `PATCH /api/admin/users/:id/status` activates/disables accounts for Owner/HR; HR can manage employee accounts only.
-- `PATCH /api/admin/users/:id/role` lets only an Owner change roles.
+```sh
+cd my-website/backend
+npm install
+npm run db:check
+npm run dev
+```
 
-To create the first Owner, first ensure the MongoDB IP allowlist permits this server. Set `BOOTSTRAP_OWNER_NAME`, `BOOTSTRAP_OWNER_ID`, `BOOTSTRAP_OWNER_EMAIL`, and a unique `BOOTSTRAP_OWNER_PASSWORD` of at least 16 characters in the backend environment, then run `npm run bootstrap-owner`. The command refuses if there is already an active Owner. Remove those four values after it succeeds. Do not expose bootstrap values in source control or command-line arguments.
+Frontend එක වෙනම Terminal එකක `my-website` folder එකෙන් `npm run dev` යොදා ආරම්භ කරන්න. Vite `/api` ඉල්ලීම් `http://localhost:5001` වෙත යවයි. API තත්ත්වය `http://localhost:5001/api/health` හරහා බලන්න පුළුවන්.
 
-Login and registration limits currently use in-memory counters. For a multi-instance production deployment, replace this with a shared rate-limit store so limits apply across all server instances.
+`MongoDB rejected the database username or password` என்றால் Atlas **Database Access**-ல் database user password-ஐ reset செய்து, `backend/.env`-ல் `MONGO_URI`-ஐ புதுப்பித்து `npm run db:check` மீண்டும் இயக்கவும். கடவுச்சொல்லை chat-ல் பகிர வேண்டாம்.
+
+## API
+
+- `POST /api/auth/register` — අනුමැතිය බලාපොරොත්තු වන Employee ගිණුමක් සාදයි. Public registration හරහා උසස් භූමිකාවක් තෝරාගත නොහැක.
+- `POST /api/auth/login` — සාර්ථක login එකකදී `HttpOnly` session cookie එකක් නිකුත් කරයි.
+- `POST /api/auth/logout` — session cookie එක ඉවත් කරයි.
+- `GET /api/auth/me` — signed-in user විස්තර ලබාදෙයි.
+- `GET /api/admin/pending-users` — Owner සහ HR සඳහා pending ගිණුම් පෙන්වයි.
+- `PATCH /api/admin/users/:id/status` — Owner හෝ HR ගිණුමක් සක්‍රිය/අක්‍රිය කරයි. HR හට Employee ගිණුම් පමණක් වෙනස් කළ හැක.
+- `PATCH /api/admin/users/:id/role` — Owner පමණක් role වෙනස් කරයි.
+
+පළමු Owner ගිණුම සඳහා `.env` තුළ `BOOTSTRAP_OWNER_NAME`, `BOOTSTRAP_OWNER_ID`, `BOOTSTRAP_OWNER_EMAIL`, `BOOTSTRAP_OWNER_PASSWORD` (අවම අකුරු 16) තාවකාලිකව දමා `npm run bootstrap-owner` ක්‍රියාත්මක කරන්න. සාර්ථක වූ පසු එම අගයන් `.env` වෙතින් ඉවත් කරන්න. Active Owner කෙනෙක් දැනටමත් ඇත්නම් bootstrap ක්‍රියාත්මක නොවේ.
+
+Login සහ registration ඉල්ලීම් සීමාව එක් backend process එකක් තුළ පමණක් ගණනය වේ. Server කිහිපයක් භාවිතා කරන විට එකම සීමාව යෙදීමට හවුල් rate-limit store එකක් අවශ්‍යයි. Production එකේ HTTPS භාවිතා කර `NODE_ENV=production` සහ නිවැරදි `CLIENT_ORIGIN` සකසන්න.

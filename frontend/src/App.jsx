@@ -2,6 +2,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+async function readResponse(response) {
+  const text = await response.text();
+  if (!text) return {};
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { message: `Server returned an invalid response (${response.status}).` };
+  }
+}
+
 const menuItems = [
   "Dashboard",
   "Employees",
@@ -128,8 +138,8 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ employeeId, password, role: selectedRole }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Sign in failed.");
+      const data = await readResponse(response);
+      if (!response.ok) throw new Error(data.message || `Request failed (${response.status}).`);
       setMessage(`Welcome, ${data.user.fullName}.`);
     } catch (error) {
       setMessage(error.message || "Could not connect to the server.");
@@ -168,8 +178,8 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName, employeeId: signupId, email, password: signupPassword }),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Registration failed.");
+      const data = await readResponse(response);
+      if (!response.ok) throw new Error(data.message || `Request failed (${response.status}).`);
       setSelectedRole("The Employee");
       setMessage(data.message);
       setFullName("");
