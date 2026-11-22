@@ -1076,7 +1076,7 @@ body {
 
 .login-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 760px;
   margin: auto;
 }
 
@@ -1186,6 +1186,12 @@ body {
 }
 
 /* SMALL MOBILE */
+@media (max-width: 768px) {
+  .login-card {
+    max-width: 450px;
+  }
+}
+
 @media (max-width: 480px) {
   .roles-grid,
   .steps-row {
@@ -1193,6 +1199,7 @@ body {
   }
 
   .login-card {
+    max-width: 100%;
     padding: 22px 16px;
   }
 }
