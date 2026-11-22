@@ -226,9 +226,8 @@ function App() {
           {menuItems.map((item) => (
             <button
               key={item}
-              className={`menu-item ${
-                activeMenu === item ? "active" : ""
-              }`}
+              type="button"
+              className={`menu-item ${activeMenu === item ? "active" : ""}`}
               onClick={() => {
                 setActiveMenu(item);
                 setIsMenuOpen(false);

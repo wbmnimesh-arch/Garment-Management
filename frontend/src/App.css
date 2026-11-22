@@ -82,20 +82,25 @@ button {
   background: transparent;
   color: #d4e5f7;
   text-align: left;
-  font-size: 16px;
+  font: inherit;
   cursor: pointer;
-  transition: 0.25s;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .menu-item:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
+  background: #2878c7;
+  color: #ffffff;
 }
 
 .menu-item.active {
-  background: #2878c7;
-  color: white;
+  background: #1763ad;
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item:focus-visible {
+  outline: 2px solid #83c6ff;
+  outline-offset: 2px;
 }
 
 .menu-dot {
