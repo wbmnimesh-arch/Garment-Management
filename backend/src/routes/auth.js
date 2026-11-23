@@ -48,7 +48,12 @@ function authRoutes(config, auth) {
       if (user.status !== "active") return res.status(403).json({ message: user.status === "pending" ? "Your account is awaiting HR activation." : "Your account is disabled. Contact HR." });
       if (role && role !== user.role) return res.status(403).json({ message: "This account does not have the selected role." });
 
-      const token = jwt.sign({ sub: user.id }, config.jwtSecret, { algorithm: "HS256", expiresIn: "8h" });
+      const token = jwt.sign({ sub: user.id }, config.jwtSecret, {
+        algorithm: "HS256",
+        expiresIn: "8h",
+        issuer: "cutfree-api",
+        audience: "cutfree-web",
+      });
       res.cookie(auth.cookieName, token, auth.cookieOptions(config));
       return res.json({ message: "Signed in successfully.", user: { id: user.id, fullName: user.fullName, employeeId: user.employeeId, email: user.email, role: user.role } });
     } catch (error) {

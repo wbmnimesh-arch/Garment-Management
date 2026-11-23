@@ -18,7 +18,12 @@ function createAuth(config) {
     try {
       const token = readCookie(req);
       if (!token) return res.status(401).json({ message: "Please sign in." });
-      const payload = jwt.verify(token, config.jwtSecret, { algorithms: ["HS256"] });
+      const payload = jwt.verify(token, config.jwtSecret, {
+        algorithms: ["HS256"],
+        issuer: "cutfree-api",
+        audience: "cutfree-web",
+        maxAge: "8h",
+      });
       const user = await User.findById(payload.sub);
       if (!user || user.status !== "active") return res.status(401).json({ message: "Your session is no longer active." });
       req.user = user;
