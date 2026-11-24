@@ -14,13 +14,11 @@ async function readResponse(response) {
 
 const menuItems = [
   "Dashboard",
-  "Employees",
-  "Attendance Device",
-  "Live Attendance",
-  "Time Review",
-  "Leave Requests",
-  "Payroll",
-  "Reports",
+  "Settings",
+  "The Owner",
+  "The Manager",
+  "Human Resources",
+  "The Employee"
 ];
 
 const roles = [
@@ -78,10 +76,49 @@ function StepRow({ steps }) {
     </div>
   );
 }
+function SettingsPage({ theme, setTheme }) {
+  return (
+    <section className="page-content" aria-labelledby="settings-title">
+      <div className="page-title">
+        <div>
+          <p className="small-title">ADMINISTRATION</p>
+          <h2 id="settings-title">Settings</h2>
+        </div>
+      </div>
 
+      <div className="settings-card">
+        <h3>Account Settings</h3>
+        <p>Choose how the application looks on this device.</p>
+
+        <label htmlFor="theme">Display mode</label>
+        <select
+          id="theme"
+          name="theme"
+          value={theme}
+          onChange={(event) => setTheme(event.target.value)}
+        >
+          <option value="light">Light mode</option>
+          <option value="dark">Dark mode</option>
+        </select>
+
+        <p className="settings-note">
+            Your display mode is saved in this browser.
+        </p>
+      </div>
+    </section>
+  );
+}
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Dashboard");
+  const [theme, setTheme] = useState(
+  () => localStorage.getItem("cutfree_theme") || "light"
+  );
+
+  useEffect(() => {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("cutfree_theme", theme);
+  }, [theme]);
 
   const [selectedRole, setSelectedRole] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
@@ -229,9 +266,20 @@ function App() {
               type="button"
               className={`menu-item ${activeMenu === item ? "active" : ""}`}
               onClick={() => {
-                setActiveMenu(item);
-                setIsMenuOpen(false);
-              }}
+                const roleItems = [
+                  "The Owner",
+                  "The Manager",
+                  "Human Resources",
+                  "The Employee",
+                ];
+
+                if (roleItems.includes(item)) {
+                  handleRoleSelect(item);
+                } 
+
+              setActiveMenu(item);
+              setIsMenuOpen(false);
+            }}
             >
               <span className="menu-dot">●</span>
               {item}
@@ -276,7 +324,10 @@ function App() {
 
         {/* DASHBOARD */}
         {!showLogin && (
-          <div className="page-content">
+          activeMenu === "Settings" ? (
+            <SettingsPage theme={theme} setTheme={setTheme} />
+          ) : (
+            <div className="page-content">
 
             <div className="page-title">
               <div>
@@ -326,8 +377,9 @@ function App() {
               <StepRow steps={nextSteps} />
             </section>
 
-          </div>
-        )}
+             </div>
+          )
+    )}
 
         {/* LOGIN PAGE */}
         {showLogin && (
