@@ -108,6 +108,110 @@ function SettingsPage({ theme, setTheme }) {
     </section>
   );
 }
+const ownerStats = [
+  { value: "248", label: "Employees" },
+  { value: "231", label: "Present Today" },
+  { value: "LKR 8.4M", label: "Monthly Payroll" },
+  { value: "03", label: "Pending Approvals" },
+];
+
+const ownerSections = [
+  {
+    title: "Teams and Access",
+    intro: "Manage teams and roles across the organization",
+    items: [
+      "Managers, HR, and employee teams",
+      "Review and approve new accounts",
+      "Manage access for teams and departments",
+    ],
+  },
+  {
+    title: "Payroll Approval",
+    intro: "Review and approve monthly payroll",
+    items: [
+      "Review total payroll and overtime",
+      "Check payroll awaiting approval",
+      "Approve payroll for payment",
+    ],
+  },
+  {
+    title: "System Settings",
+    intro: "Configure factory shifts and devices",
+    items: [
+      "Departments, shifts, and holidays",
+      "Connect attendance devices",
+      "Configure monthly reports",
+    ],
+  },
+  {
+    title: "Activity Log",
+    intro: "Review activity across the system",
+    items: [
+      "Review payroll changes",
+      "Track account approvals",
+      "Download Excel or PDF reports",
+    ],
+  },
+];
+
+function OwnerDashboard({ onSignOut }) {
+  return (
+    <main className="owner-dashboard">
+      <header className="owner-banner">
+        <div>
+          <p className="owner-brand">STITCHFLOW</p>
+          <p className="owner-tagline">
+            Garment Work and Attendance System
+          </p>
+        </div>
+        <button
+          className="owner-signout"
+          type="button"
+          onClick={onSignOut}
+        >
+          Sign Out
+        </button>
+      </header>
+
+      <section className="owner-overview" aria-labelledby="owner-title">
+        <div className="owner-heading">
+          <div>
+            <h1 id="owner-title">Owner Dashboard</h1>
+            <p>
+              Manage departments, teams, and payroll from one place.
+            </p>
+          </div>
+          <span className="owner-role-pill">Owner</span>
+        </div>
+
+        <div className="owner-stats">
+          {ownerStats.map((stat) => (
+            <article className="owner-stat" key={stat.label}>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </article>
+          ))}
+        </div>
+
+        <div className="owner-sections">
+          {ownerSections.map((section) => (
+            <article className="owner-section-card" key={section.title}>
+              <h2>{section.title}</h2>
+              <div className="owner-section-body">
+                <p>{section.intro}</p>
+                <ul>
+                  {section.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Dashboard");
@@ -123,7 +227,7 @@ function App() {
   const [selectedRole, setSelectedRole] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-
+  const [ownerSignedIn, setOwnerSignedIn] = useState(false);
   const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -176,13 +280,40 @@ function App() {
         body: JSON.stringify({ employeeId, password, role: selectedRole }),
       });
       const data = await readResponse(response);
-      if (!response.ok) throw new Error(data.message || `Request failed (${response.status}).`);
-      setMessage(`Welcome, ${data.user.fullName}.`);
+      iif (!response.ok) {
+  throw new Error(data.message || `Request failed (${response.status}).`);
+}
+
+if (data.user.role === "The Owner") {
+  setOwnerSignedIn(true);
+  setShowLogin(false);
+  setShowSignup(false);
+  setActiveMenu("The Owner");
+  setMessage("");
+  return;
+}
+
+setMessage(`Welcome, ${data.user.fullName}.`);
     } catch (error) {
       setMessage(error.message || "Could not connect to the server.");
     }
   }
-
+  async function handleOwnerSignOut() {
+  try {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "same-origin",
+    });
+  } catch {
+    // Return to the main page if the server is unavailable.
+  } finally {
+    setOwnerSignedIn(false);
+    setSelectedRole(null);
+    setActiveMenu("Dashboard");
+    setShowLogin(false);
+    setMessage("");
+  }
+}
   async function handleSignUp(event) {
     event.preventDefault();
 
@@ -229,7 +360,11 @@ function App() {
     }
   }
 
-  return (
+  if (ownerSignedIn) {
+  return <OwnerDashboard onSignOut={handleOwnerSignOut} />;
+}
+
+return (
     <div className="app-container">
 
       {/* MOBILE OVERLAY */}
