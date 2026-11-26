@@ -251,6 +251,27 @@ function App() {
     setMessage("");
   }
 
+  function handleMenuClick(item) {
+    setActiveMenu(item);
+    setIsMenuOpen(false);
+
+    const roleItems = [
+      "The Owner",
+      "The Manager",
+      "Human Resources",
+      "The Employee",
+    ];
+
+    if (roleItems.includes(item)) {
+      handleRoleSelect(item);
+    } else {
+      setShowLogin(false);
+      setShowSignup(false);
+      setSelectedRole(null);
+      setMessage("");
+    }
+  }
+
   function handleBack() {
     setShowLogin(false);
     setShowSignup(false);
@@ -280,7 +301,7 @@ function App() {
         body: JSON.stringify({ employeeId, password, role: selectedRole }),
       });
       const data = await readResponse(response);
-      iif (!response.ok) {
+if (!response.ok) {
   throw new Error(data.message || `Request failed (${response.status}).`);
 }
 
@@ -339,25 +360,25 @@ setMessage(`Welcome, ${data.user.fullName}.`);
     }
 
     setMessage("Submitting registration...");
-    try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, employeeId: signupId, email, password: signupPassword }),
-      });
-      const data = await readResponse(response);
-      if (!response.ok) throw new Error(data.message || `Request failed (${response.status}).`);
-      setSelectedRole("The Employee");
-      setMessage(data.message);
-      setFullName("");
-      setSignupId("");
-      setEmail("");
-      setSignupPassword("");
-      setConfirmPassword("");
-    } catch (error) {
-      setMessage(error.message || "Could not connect to the server.");
-    }
+      try {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fullName, employeeId: signupId, email, password: signupPassword }),
+        });
+       const data = await readResponse(response);
+        if (!response.ok) throw new Error(data.message || `Request failed (${response.status}).`);
+        setSelectedRole("The Employee");
+        setMessage(data.message);
+        setFullName("");
+        setSignupId("");
+        setEmail("");
+        setSignupPassword("");
+        setConfirmPassword("");
+      } catch (error) {
+        setMessage(error.message || "Could not connect to the server.");
+      }
   }
 
   if (ownerSignedIn) {
@@ -400,21 +421,7 @@ return (
               key={item}
               type="button"
               className={`menu-item ${activeMenu === item ? "active" : ""}`}
-              onClick={() => {
-                const roleItems = [
-                  "The Owner",
-                  "The Manager",
-                  "Human Resources",
-                  "The Employee",
-                ];
-
-                if (roleItems.includes(item)) {
-                  handleRoleSelect(item);
-                } 
-
-              setActiveMenu(item);
-              setIsMenuOpen(false);
-            }}
+              onClick={() => handleMenuClick(item)}
             >
               <span className="menu-dot">●</span>
               {item}
