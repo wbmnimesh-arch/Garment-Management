@@ -429,13 +429,25 @@ return (
           ))}
         </div>
 
-        <div className="sidebar-profile">
+        <button
+          type="button"
+          className={`sidebar-profile menu-item ${
+            activeMenu === "Administrator" ? "active" : ""
+          }`}
+          onClick={() => {
+            setActiveMenu("Administrator");
+            setShowLogin(false);
+            setShowSignup(false);
+            setSelectedRole(null);
+            setMessage("");
+          }}
+        >
           <div className="profile-avatar">D</div>
           <div>
             <h4>Dinuka Nimesh</h4>
             <p>Administrator</p>
           </div>
-        </div>
+        </button>
       </aside>
 
       {/* MAIN CONTENT */}
@@ -466,7 +478,30 @@ return (
 
         {/* DASHBOARD */}
         {!showLogin && (
-          activeMenu === "Settings" ? (
+          activeMenu === "Administrator" ? (
+            <section className="page-content" aria-labelledby="administrator-title">
+              <div className="page-title">
+                <div>
+                  <p className="small-title">ABOUT</p>
+                  <h2 id="administrator-title">Administrator</h2>
+                </div>
+              </div>
+
+              <div className="about-card">
+                <h3>About Me</h3>
+                <p>
+                  Hello, I’m Dinuka Nimesh, the administrator of CUT FREE.
+                  I help manage the company’s garment work and attendance system.
+                </p>
+
+                <h3>About CUT FREE</h3>
+                <p>
+                  CUT FREE is a garment company. This management system helps
+                  organize employee attendance, work processes, and payroll.
+                </p>
+              </div>
+            </section>
+          ) : activeMenu === "Settings" ? (
             <SettingsPage theme={theme} setTheme={setTheme} />
           ) : (
             <div className="page-content">

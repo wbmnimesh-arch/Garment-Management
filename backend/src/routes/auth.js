@@ -5,6 +5,9 @@ const { User } = require("../models/User");
 const { rateLimit } = require("../middleware/security");
 
 const emailPattern = /^\S+@\S+\.\S+$/;
+// Compare against a real bcrypt hash when the ID is unknown so failed logins
+// take roughly the same time and do not reveal whether an account exists.
+const dummyPasswordHash = bcrypt.hashSync("cutfree-invalid-login-placeholder", 12);
 
 function authRoutes(config, auth) {
   const router = express.Router();
@@ -44,7 +47,8 @@ function authRoutes(config, auth) {
         return res.status(400).json({ message: "Enter your Employee ID and password." });
       }
       const user = await User.findOne({ employeeId: employeeId.trim().toLowerCase() }).select("+password");
-      if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ message: "Invalid Employee ID or password." });
+      const passwordMatches = await bcrypt.compare(password, user?.password || dummyPasswordHash);
+      if (!user || !passwordMatches) return res.status(401).json({ message: "Invalid Employee ID or password." });
       if (user.status !== "active") return res.status(403).json({ message: user.status === "pending" ? "Your account is awaiting HR activation." : "Your account is disabled. Contact HR." });
       if (role && role !== user.role) return res.status(403).json({ message: "This account does not have the selected role." });
 
